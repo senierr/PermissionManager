@@ -17,7 +17,7 @@ maven { url 'https://jitpack.io' }
 ### 2. 添加依赖
 
 ```java
-compile 'com.github.senierr:PermissionManager:1.0.1'
+compile 'com.github.senierr:PermissionManager:1.0.2'
 ```
 
 ### 3. 检查权限
@@ -38,25 +38,16 @@ PermissionManager
 ```java
 /**
  * 所有请求权限通过
- *
- * @param permissions 请求的权限
  */
-public abstract void onAllGranted(String[] permissions);
-
-/**
- * 权限通过
- *
- * @param permission 请求的权限
- */
-public void onGranted(String permission) {}
+public abstract void onAllGranted();
 
 /**
  * 权限未通过
  *
- * @param permission 请求的权限
- * @param isNoAsk 是否不再询问
+ * @param deniedWithNextAskList 拒绝，下次询问的权限列表
+ * @param deniedWithNoAskList 拒绝，不再询问的权限列表
  */
-public abstract void onDenied(String permission, boolean isNoAsk);
+public void onDenied(List<String> deniedWithNextAskList, List<String> deniedWithNoAskList) {}
 ```
 
 ## 其他说明

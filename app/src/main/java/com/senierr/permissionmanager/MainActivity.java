@@ -10,6 +10,8 @@ import android.widget.Button;
 import com.senierr.lib.CheckCallback;
 import com.senierr.lib.PermissionManager;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -29,20 +31,18 @@ public class MainActivity extends AppCompatActivity {
                                 Manifest.permission.CAMERA)
                         .check(new CheckCallback() {
                             @Override
-                            public void onAllGranted(String[] permissions) {
-                                for (String permission : permissions) {
-                                    Log.e("MainActivity", "onAllGranted: " + permission);
+                            public void onAllGranted() {
+                                Log.e("MainActivity", "onAllGranted");
+                            }
+
+                            @Override
+                            public void onDenied(List<String> deniedWithNextAskList, List<String> deniedWithNoAskList) {
+                                for (String s : deniedWithNextAskList) {
+                                    Log.e("MainActivity", "deniedWithNextAskList: " + s);
                                 }
-                            }
-
-                            @Override
-                            public void onDenied(String permission, boolean isNoAsk) {
-                                Log.e("MainActivity", "onDenied: " + permission + ", isNoAsk: " + isNoAsk);
-                            }
-
-                            @Override
-                            public void onGranted(String permission) {
-                                Log.e("MainActivity", "onGranted: " + permission);
+                                for (String s : deniedWithNoAskList) {
+                                    Log.e("MainActivity", "deniedWithNoAskList: " + s);
+                                }
                             }
                         });
             }

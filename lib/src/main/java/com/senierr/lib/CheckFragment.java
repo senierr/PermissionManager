@@ -38,7 +38,7 @@ public class CheckFragment extends Fragment {
         if (!isMarshmallow()) {
             Log.d("PermissionManager", "Android sdk < 23!");
             if (checkCallback != null) {
-                checkCallback.onAllGranted(permissions);
+                checkCallback.onAllGranted();
             }
             return;
         }
@@ -47,17 +47,13 @@ public class CheckFragment extends Fragment {
         for (String permission: permissions) {
             if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionList.add(permission);
-            } else {
-                if (checkCallback != null) {
-                    checkCallback.onGranted(permission);
-                }
             }
         }
         if (permissionList.size() > 0) {
             requestPermissions(permissionList.toArray(new String[permissionList.size()]), PERMISSIONS_REQUEST_CODE);
         } else {
             if (checkCallback != null) {
-                checkCallback.onAllGranted(permissions);
+                checkCallback.onAllGranted();
             }
         }
     }
@@ -70,21 +66,26 @@ public class CheckFragment extends Fragment {
         }
 
         boolean isAllGranted = true;
+        List<String> deniedWithNextAskList = new ArrayList<>();
+        List<String> deniedWithNoAskList = new ArrayList<>();
+
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                if (checkCallback != null) {
-                    checkCallback.onDenied(permissions[i], !shouldShowRequestPermissionRationale(permissions[i]));
-                }
                 isAllGranted = false;
-            } else {
-                if (checkCallback != null) {
-                    checkCallback.onGranted(permissions[i]);
+                if (shouldShowRequestPermissionRationale(permissions[i])) {
+                    deniedWithNextAskList.add(permissions[i]);
+                } else {
+                    deniedWithNoAskList.add(permissions[i]);
                 }
             }
         }
 
-        if (checkCallback != null && isAllGranted) {
-            checkCallback.onAllGranted(permissions);
+        if (checkCallback != null) {
+            if (isAllGranted) {
+                checkCallback.onAllGranted();
+            } else {
+                checkCallback.onDenied(deniedWithNextAskList, deniedWithNoAskList);
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,8 +30,8 @@ public class CheckFragment extends Fragment {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void checkPermissions(final List<String> permissions) {
-        if (permissions == null || permissions.size() == 0) {
+    public void checkPermissions(final String[] permissions) {
+        if (permissions == null || permissions.length == 0) {
             return;
         }
 
@@ -44,14 +43,16 @@ public class CheckFragment extends Fragment {
             return;
         }
 
-        // 检查权限
         List<String> permissionList = new ArrayList<>();
         for (String permission: permissions) {
             if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionList.add(permission);
+            } else {
+                if (checkCallback != null) {
+                    checkCallback.onGranted(permission);
+                }
             }
         }
-        // 请求权限
         if (permissionList.size() > 0) {
             requestPermissions(permissionList.toArray(new String[permissionList.size()]), PERMISSIONS_REQUEST_CODE);
         } else {
@@ -68,27 +69,22 @@ public class CheckFragment extends Fragment {
             return;
         }
 
-        List<String> deniedByUserList = new ArrayList<>();
-        List<String> deniedNoRequestList = new ArrayList<>();
-
         boolean isAllGranted = true;
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                if (checkCallback != null) {
+                    checkCallback.onDenied(permissions[i], !shouldShowRequestPermissionRationale(permissions[i]));
+                }
                 isAllGranted = false;
-                if (!shouldShowRequestPermissionRationale(permissions[i])) {
-                    deniedNoRequestList.add(permissions[i]);
-                } else {
-                    deniedByUserList.add(permissions[i]);
+            } else {
+                if (checkCallback != null) {
+                    checkCallback.onGranted(permissions[i]);
                 }
             }
         }
 
-        if (checkCallback != null) {
-            if (isAllGranted) {
-                checkCallback.onAllGranted(Arrays.asList(permissions));
-            } else {
-                checkCallback.onDenied(deniedByUserList, deniedNoRequestList);
-            }
+        if (checkCallback != null && isAllGranted) {
+            checkCallback.onAllGranted(permissions);
         }
     }
 

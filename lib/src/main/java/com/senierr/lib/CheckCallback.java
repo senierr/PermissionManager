@@ -1,7 +1,5 @@
 package com.senierr.lib;
 
-import java.util.List;
-
 /**
  * 权限检查回调
  *
@@ -9,20 +7,27 @@ import java.util.List;
  * @date 2017/5/4
  */
 
-public interface CheckCallback {
+public abstract class CheckCallback {
 
     /**
      * 所有请求权限通过
      *
-     * @param permissions 请求权限
+     * @param permissions 请求的权限
      */
-    void onAllGranted(List<String> permissions);
+    public abstract void onAllGranted(String[] permissions);
+
+    /**
+     * 权限通过
+     *
+     * @param permission 请求的权限
+     */
+    public void onGranted(String permission) {}
 
     /**
      * 权限未通过
      *
-     * @param deniedByUserList 用户手动拒绝的权限
-     * @param deniedNoRequestList 不再提醒的拒绝权限
+     * @param permission 请求的权限
+     * @param isNoAsk 是否不再询问
      */
-    void onDenied(List<String> deniedByUserList, List<String> deniedNoRequestList);
+    public abstract void onDenied(String permission, boolean isNoAsk);
 }

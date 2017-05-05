@@ -18,7 +18,7 @@ public class PermissionManager {
     private static final String TAG = "PermissionManager";
 
     private CheckFragment checkFragment;
-    private List<String> permissions;
+    private String[] permissions;
 
     private PermissionManager(Activity activity) {
         if (checkFragment == null) {
@@ -42,7 +42,7 @@ public class PermissionManager {
         if (permissions == null || permissions.length == 0) {
             throw new IllegalArgumentException("PermissionManager requires at least one input permission");
         }
-        this.permissions = Arrays.asList(permissions);
+        this.permissions = permissions;
         return this;
     }
 

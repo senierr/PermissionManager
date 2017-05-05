@@ -17,7 +17,7 @@ maven { url 'https://jitpack.io' }
 ### 2. 添加依赖
 
 ```java
-compile 'com.github.senierr:PermissionManager:1.0.0'
+compile 'com.github.senierr:PermissionManager:1.0.1'
 ```
 
 ### 3. 检查权限

@@ -1,10 +1,7 @@
-package com.senierr.lib;
+package com.senierr.permission;
 
 import android.app.Activity;
 import android.app.FragmentManager;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 权限管理

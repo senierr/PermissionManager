@@ -1,4 +1,4 @@
-package com.senierr.lib;
+package com.senierr.permission;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;

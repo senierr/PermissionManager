@@ -1,4 +1,4 @@
-package com.senierr.lib;
+package com.senierr.permission;
 
 import java.util.List;
 

@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.senierr.lib.CheckCallback;
-import com.senierr.lib.PermissionManager;
+import com.senierr.permission.CheckCallback;
+import com.senierr.permission.PermissionManager;
 
 import java.util.List;
 

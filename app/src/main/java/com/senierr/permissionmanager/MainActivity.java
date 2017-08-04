@@ -25,11 +25,17 @@ public class MainActivity extends AppCompatActivity {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PermissionManager.build(MainActivity.this)
+                Log.e("MainActivity", "check" + PermissionManager.with(MainActivity.this)
                         .permissions(
                                 Manifest.permission.READ_PHONE_STATE,
                                 Manifest.permission.CAMERA)
-                        .check(new CheckCallback() {
+                .check());
+
+                PermissionManager.with(MainActivity.this)
+                        .permissions(
+                                Manifest.permission.READ_PHONE_STATE,
+                                Manifest.permission.CAMERA)
+                        .request(new CheckCallback() {
                             @Override
                             public void onAllGranted() {
                                 Log.e("MainActivity", "onAllGranted");

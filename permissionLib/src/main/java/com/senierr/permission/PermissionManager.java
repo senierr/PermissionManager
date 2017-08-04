@@ -31,10 +31,22 @@ public class PermissionManager {
         }
     }
 
-    public static PermissionManager build(Activity activity) {
+    /**
+     * 创建
+     *
+     * @param activity
+     * @return
+     */
+    public static PermissionManager with(Activity activity) {
         return new PermissionManager(activity);
     }
 
+    /**
+     * 添加权限
+     *
+     * @param permissions
+     * @return
+     */
     public PermissionManager permissions(final String... permissions) {
         if (permissions == null || permissions.length == 0) {
             throw new IllegalArgumentException("PermissionManager requires at least one input permission");
@@ -43,10 +55,28 @@ public class PermissionManager {
         return this;
     }
 
-    public void check(CheckCallback checkCallback) {
+    /**
+     * 检查权限
+     *
+     * @return
+     */
+    public boolean check() {
+        if (checkFragment != null) {
+            return checkFragment.check(permissions);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 请求权限
+     *
+     * @param checkCallback
+     */
+    public void request(CheckCallback checkCallback) {
         if (checkFragment != null) {
             checkFragment.setCheckCallback(checkCallback);
-            checkFragment.checkPermissions(permissions);
+            checkFragment.checkAndRequest(permissions);
         }
     }
 }

@@ -30,7 +30,28 @@ public class CheckFragment extends Fragment {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void checkPermissions(final String[] permissions) {
+    public boolean check(final String[] permissions) {
+        if (permissions == null || permissions.length == 0) {
+            return true;
+        }
+
+        if (!isMarshmallow()) {
+            Log.d("PermissionManager", "Android sdk < 23!");
+            return true;
+        }
+
+        List<String> permissionList = new ArrayList<>();
+        for (String permission: permissions) {
+            if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionList.add(permission);
+            }
+        }
+
+        return permissionList.size() == 0;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void checkAndRequest(final String[] permissions) {
         if (permissions == null || permissions.length == 0) {
             return;
         }

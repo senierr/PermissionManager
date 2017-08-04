@@ -17,16 +17,23 @@ maven { url 'https://jitpack.io' }
 ### 2. 添加依赖
 
 ```java
-compile 'com.github.senierr:PermissionManager:1.0.2'
+compile 'com.github.senierr:PermissionManager:1.0.4'
 ```
 
 ### 3. 检查权限
 
 ```java
+// 权限同步检测
 PermissionManager
-        .build(activity)
+        .with(activity)
         .permissions(String... permissions)
-        .check(new CheckCallback() {
+        .check();
+		
+// 权限请求
+PermissionManager
+        .with(activity)
+        .permissions(String... permissions)
+        .request(new CheckCallback() {
             ...
         });
 ```
@@ -78,5 +85,3 @@ public void onDenied(List<String> deniedWithNextAskList, List<String> deniedWith
 >当应用运行中某权限被禁止，此应用进程会被杀除，并保存Task。当用户重新切换至此应用时，会恢复Task列表。
 
 简而言之，当你的应用某权限被禁止，并重新切回后，所有Task页面生命周期会重新执行一遍。
-
-所以，咳咳咳...少年，回到问题1，选择合适的时机进行申请吧！

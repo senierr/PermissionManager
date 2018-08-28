@@ -17,7 +17,7 @@ maven { url 'https://jitpack.io' }
 ### 2. 添加依赖
 
 ```java
-compile 'com.github.senierr:PermissionManager:1.0.4'
+compile 'com.github.senierr:PermissionManager:<release_version>'
 ```
 
 ### 3. 检查权限
@@ -28,7 +28,7 @@ PermissionManager
         .with(activity)
         .permissions(String... permissions)
         .check();
-		
+
 // 权限请求
 PermissionManager
         .with(activity)
@@ -38,9 +38,7 @@ PermissionManager
         });
 ```
 
-**没了？对，没了！就是这么简单！**
-
-## 回调说明
+## 申请回调
 
 ```java
 /**
@@ -57,31 +55,49 @@ public abstract void onAllGranted();
 public void onDenied(List<String> deniedWithNextAskList, List<String> deniedWithNoAskList) {}
 ```
 
-## 其他说明
+## 危险权限表
 
-关于6.0动态权限申请相关的文章很多，这里就不多介绍了。
+```java
+group:android.permission-group.CONTACTS
+    permission:android.permission.WRITE_CONTACTS
+    permission:android.permission.GET_ACCOUNTS
+    permission:android.permission.READ_CONTACTS
 
-这里简单介绍下使用中的具体问题：
+group:android.permission-group.PHONE
+    permission:android.permission.READ_CALL_LOG
+    permission:android.permission.READ_PHONE_STATE
+    permission:android.permission.CALL_PHONE
+    permission:android.permission.WRITE_CALL_LOG
+    permission:android.permission.USE_SIP
+    permission:android.permission.PROCESS_OUTGOING_CALLS
+    permission:com.android.voicemail.permission.ADD_VOICEMAIL
 
-### 1. 何时申请
+group:android.permission-group.CALENDAR
+    permission:android.permission.READ_CALENDAR
+    permission:android.permission.WRITE_CALENDAR
 
-* 具体使用某功能时；
-* 引导页开始时；
-* 具体页面开始时；
-* APP切换至前台时；
-* ......
+group:android.permission-group.CAMERA
+    permission:android.permission.CAMERA
 
-根据功能权限的重要度，选择合适的时机进行申请。
+group:android.permission-group.SENSORS
+    permission:android.permission.BODY_SENSORS
 
-### 2. 应用运行中，权限被改变
+group:android.permission-group.LOCATION
+    permission:android.permission.ACCESS_FINE_LOCATION
+    permission:android.permission.ACCESS_COARSE_LOCATION
 
-这一情景不多，但也会出现：
->应用运行过程中，用户Home键，切换至设置或其他，禁止了某项权限。用户又切回了应用，发现一些功能无法运行。
+group:android.permission-group.STORAGE
+    permission:android.permission.READ_EXTERNAL_STORAGE
+    permission:android.permission.WRITE_EXTERNAL_STORAGE
 
-这是一件比较尴尬的事...
+group:android.permission-group.MICROPHONE
+    permission:android.permission.RECORD_AUDIO
 
-还好，Google考虑到了这一情景，并对其进行了处理：
-
->当应用运行中某权限被禁止，此应用进程会被杀除，并保存Task。当用户重新切换至此应用时，会恢复Task列表。
-
-简而言之，当你的应用某权限被禁止，并重新切回后，所有Task页面生命周期会重新执行一遍。
+group:android.permission-group.SMS
+    permission:android.permission.READ_SMS
+    permission:android.permission.RECEIVE_WAP_PUSH
+    permission:android.permission.RECEIVE_MMS
+    permission:android.permission.RECEIVE_SMS
+    permission:android.permission.SEND_SMS
+    permission:android.permission.READ_CELL_BROADCASTS
+```

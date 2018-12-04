@@ -9,19 +9,18 @@ import android.app.FragmentManager;
  * @author zhouchunjie
  * @date 2017/3/6
  */
-
 public class PermissionManager {
 
-    private static final String TAG = "PermissionManager";
+    private static final String TAG = PermissionManager.class.getSimpleName();
 
-    private CheckFragment checkFragment;
+    private ProxyFragment checkFragment;
     private String[] permissions;
 
     private PermissionManager(Activity activity) {
         if (checkFragment == null) {
-            checkFragment = (CheckFragment) activity.getFragmentManager().findFragmentByTag(TAG);
+            checkFragment = (ProxyFragment) activity.getFragmentManager().findFragmentByTag(TAG);
             if (checkFragment == null) {
-                checkFragment = new CheckFragment();
+                checkFragment = new ProxyFragment();
                 FragmentManager fragmentManager = activity.getFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(checkFragment, TAG)
@@ -49,7 +48,7 @@ public class PermissionManager {
      */
     public PermissionManager permissions(final String... permissions) {
         if (permissions == null || permissions.length == 0) {
-            throw new IllegalArgumentException("PermissionManager requires at least one input permission");
+            throw new IllegalArgumentException("PermissionManager requires at least one input permission!");
         }
         this.permissions = permissions;
         return this;
@@ -73,10 +72,10 @@ public class PermissionManager {
      *
      * @param checkCallback
      */
-    public void request(CheckCallback checkCallback) {
+    public void request(RequestCallback checkCallback) {
         if (checkFragment != null) {
-            checkFragment.setCheckCallback(checkCallback);
-            checkFragment.checkAndRequest(permissions);
+            checkFragment.setRequestCallback(checkCallback);
+            checkFragment.request(permissions);
         }
     }
 }

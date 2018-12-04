@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,11 @@ import java.util.List;
  * @author zhouchunjie
  * @date 2017/5/4
  */
-
-public class CheckFragment extends Fragment {
+public class ProxyFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_CODE = 66;
 
-    private CheckCallback checkCallback;
+    private RequestCallback requestCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,6 @@ public class CheckFragment extends Fragment {
         }
 
         if (!isMarshmallow()) {
-            Log.d("PermissionManager", "Android sdk < 23!");
             return true;
         }
 
@@ -51,15 +48,14 @@ public class CheckFragment extends Fragment {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public void checkAndRequest(final String[] permissions) {
+    public void request(final String[] permissions) {
         if (permissions == null || permissions.length == 0) {
             return;
         }
 
         if (!isMarshmallow()) {
-            Log.d("PermissionManager", "Android sdk < 23!");
-            if (checkCallback != null) {
-                checkCallback.onAllGranted();
+            if (requestCallback != null) {
+                requestCallback.onAllGranted();
             }
             return;
         }
@@ -73,8 +69,8 @@ public class CheckFragment extends Fragment {
         if (permissionList.size() > 0) {
             requestPermissions(permissionList.toArray(new String[permissionList.size()]), PERMISSIONS_REQUEST_CODE);
         } else {
-            if (checkCallback != null) {
-                checkCallback.onAllGranted();
+            if (requestCallback != null) {
+                requestCallback.onAllGranted();
             }
         }
     }
@@ -101,11 +97,11 @@ public class CheckFragment extends Fragment {
             }
         }
 
-        if (checkCallback != null) {
+        if (requestCallback != null) {
             if (isAllGranted) {
-                checkCallback.onAllGranted();
+                requestCallback.onAllGranted();
             } else {
-                checkCallback.onDenied(deniedWithNextAskList, deniedWithNoAskList);
+                requestCallback.onDenied(deniedWithNextAskList, deniedWithNoAskList);
             }
         }
     }
@@ -114,11 +110,11 @@ public class CheckFragment extends Fragment {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    public CheckCallback getCheckCallback() {
-        return checkCallback;
+    public RequestCallback getRequestCallback() {
+        return requestCallback;
     }
 
-    public void setCheckCallback(CheckCallback checkCallback) {
-        this.checkCallback = checkCallback;
+    public void setRequestCallback(RequestCallback requestCallback) {
+        this.requestCallback = requestCallback;
     }
 }

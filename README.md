@@ -1,6 +1,7 @@
 # PermissionManager
 
-[![](https://jitpack.io/v/senierr/PermissionManager.svg)](https://jitpack.io/#senierr/PermissionManager)
+[![](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/senierr/PermissionManager)
+[![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/senierr/PermissionManager)
 
 Android 6.0+ 动态权限申请
 
@@ -8,39 +9,42 @@ Android 6.0+ 动态权限申请
 
 **注意**：使用此库，`minSdkVersion` 必须 `>= 11`
 
-### 1. 导入仓库
+### 导入仓库
 
-```java
-maven { url 'https://jitpack.io' }
+#### Maven
+```
+<dependency>
+    <groupId>com.senierr.permission</groupId>
+    <artifactId>library</artifactId>
+    <version>1.0.0</version>
+    <type>pom</type>
+</dependency>
 ```
 
-### 2. 添加依赖
-
-```java
-compile 'com.github.senierr:PermissionManager:<release_version>'
+#### Gradle
+```
+implementation 'com.senierr.permission:library:1.0.0'
 ```
 
-### 3. 检查权限
+### 检查权限
 
-```java
-// 权限同步检测
-PermissionManager
-        .with(activity)
+```
+// 权限检测
+PermissionManager.with(activity)
         .permissions(String... permissions)
         .check();
 
 // 权限请求
-PermissionManager
-        .with(activity)
+PermissionManager.with(activity)
         .permissions(String... permissions)
-        .request(new CheckCallback() {
+        .request(new RequestCallback() {
             ...
         });
 ```
 
 ## 申请回调
 
-```java
+```
 /**
  * 所有请求权限通过
  */
@@ -49,10 +53,10 @@ public abstract void onAllGranted();
 /**
  * 权限未通过
  *
- * @param deniedWithNextAskList 拒绝，下次询问的权限列表
- * @param deniedWithNoAskList 拒绝，不再询问的权限列表
+ * @param deniedAndNextAskList 拒绝，下次询问的权限列表
+ * @param deniedAndNeverAskList 拒绝，不再询问的权限列表
  */
-public void onDenied(List<String> deniedWithNextAskList, List<String> deniedWithNoAskList) {}
+public void onDenied(List<String> deniedAndNextAskList, List<String> deniedAndNeverAskList) {}
 ```
 
 ## 危险权限表

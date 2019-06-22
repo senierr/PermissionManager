@@ -11,35 +11,45 @@ Android 6.0+ 动态权限申请
 
 ### 导入仓库
 
-#### Maven
 ```
-<dependency>
-    <groupId>com.senierr.permission</groupId>
-    <artifactId>library</artifactId>
-    <version>1.0.0</version>
-    <type>pom</type>
-</dependency>
-```
-
-#### Gradle
-```
-implementation 'com.senierr.permission:library:1.0.0'
+implementation 'com.senierr.permission:library:最新版本'
 ```
 
 ### 检查权限
 
+在Java中：
 ```
 // 权限检测
 PermissionManager.with(activity)
         .permissions(String... permissions)
         .check();
 
-// 权限请求
+// 申请权限
 PermissionManager.with(activity)
         .permissions(String... permissions)
         .request(new RequestCallback() {
             ...
         });
+```
+
+在Kotlin中，可使用**FragmentActivity**和**Fragment**的扩展函数：
+```
+// 检查权限
+checkPermissions(permissions)
+
+// 申请权限       
+requestPermissions(permissions) {
+    ...
+}
+
+或者
+requestPermissions(permissions,
+    onGrantedCallback = {
+        ...
+    },
+    onDeniedCallback = { nextAskList, neverAskList ->
+        ...
+    })
 ```
 
 ## 申请回调
@@ -61,7 +71,7 @@ public void onDenied(List<String> deniedAndNextAskList, List<String> deniedAndNe
 
 ## 危险权限表
 
-```java
+```
 group:android.permission-group.CONTACTS
     permission:android.permission.WRITE_CONTACTS
     permission:android.permission.GET_ACCOUNTS

@@ -10,6 +10,8 @@ import android.widget.Button;
 import com.senierr.permission.PermissionManager;
 import com.senierr.permission.RequestCallback;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
                         PermissionManager.with(MainActivity.this)
                                 .permissions(
                                         Manifest.permission.READ_PHONE_STATE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                         Manifest.permission.CAMERA)
                                 .check());
 
                 PermissionManager.with(MainActivity.this)
                         .permissions(
                                 Manifest.permission.READ_PHONE_STATE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.CAMERA)
                         .request(new RequestCallback() {
                             @Override
@@ -45,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onDenied(List<String> deniedAndNextAskList, List<String> deniedAndNeverAskList) {
-                                for (String s : deniedAndNextAskList) {
-                                    Log.e("MainActivity", "deniedAndNextAskList: " + s);
+                            public void onDenied(@NotNull List<String> nextAskList, @NotNull List<String> neverAskList) {
+                                for (String s : nextAskList) {
+                                    Log.e("MainActivity", "nextAskList: " + s);
                                 }
-                                for (String s : deniedAndNeverAskList) {
-                                    Log.e("MainActivity", "deniedAndNeverAskList: " + s);
+                                for (String s : neverAskList) {
+                                    Log.e("MainActivity", "neverAskList: " + s);
                                 }
                             }
                         });

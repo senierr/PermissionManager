@@ -17,7 +17,7 @@ implementation 'com.senierr.permission:library:最新版本'
 
 ### 检查权限
 
-在Java中：
+##### 在Java中：
 ```
 // 权限检测
 PermissionManager.with(activity)
@@ -32,13 +32,14 @@ PermissionManager.with(activity)
         });
 ```
 
-在Kotlin中，可使用**FragmentActivity**和**Fragment**的扩展函数：
+##### 在Kotlin中，可使用**FragmentActivity**和**Fragment**的扩展函数：
 ```
 // 检查权限
 checkPermissions(permissions)
 
 // 申请权限       
 requestPermissions(permissions) {
+    // onAllGranted
     ...
 }
 

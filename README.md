@@ -1,6 +1,6 @@
 # PermissionManager
 
-[![](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/senierr/PermissionManager)
+[![](https://img.shields.io/badge/release-v1.1.0-blue.svg)](https://github.com/senierr/PermissionManager)
 [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/senierr/PermissionManager)
 
 Android 6.0+ 动态权限申请

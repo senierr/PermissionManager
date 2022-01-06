@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
 import com.senierr.permission.*
+import kotlinx.coroutines.launch
 
 class TestFragment : Fragment() {
 
@@ -30,12 +32,34 @@ class TestFragment : Fragment() {
                             )
             )
 
-            requestPermissions(
+//            requestPermissions(
+//                    Manifest.permission.READ_PHONE_STATE,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                    Manifest.permission.CAMERA
+//            ) {
+//                Log.e("TestFragment", "onAllGranted")
+//            }
+
+            lifecycleScope.launch {
+                val result = requestPermissions(
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA
-            ) {
-                Log.e("TestFragment", "onAllGranted")
+                )
+                when (result) {
+                    is RequestResult.Granted -> {
+                        Log.e("TestFragment", "Granted")
+                    }
+                    is RequestResult.Denied -> {
+                        Log.e("TestFragment", "Denied")
+                        for (s in result.nextAsk) {
+                            Log.e("TestFragment", "nextAskList: $s")
+                        }
+                        for (s in result.neverAsk) {
+                            Log.e("TestFragment", "neverAskList: $s")
+                        }
+                    }
+                }
             }
 
 //            requestPermissions(

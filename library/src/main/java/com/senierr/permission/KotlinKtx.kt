@@ -2,6 +2,8 @@ package com.senierr.permission
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /**
  * 扩展函数
@@ -74,4 +76,42 @@ fun Fragment.requestPermissions(
                     onDeniedCallback?.invoke(nextAskList, neverAskList)
                 }
             })
+}
+
+suspend fun FragmentActivity.requestPermissions(vararg permissions: String): RequestResult {
+    return suspendCancellableCoroutine { coroutine ->
+        PermissionManager.with(this)
+            .permissions(*permissions)
+            .request(object : RequestCallback() {
+                override fun onAllGranted() {
+                    coroutine.resume(RequestResult.Granted)
+                }
+
+                override fun onDenied(
+                    nextAskList: MutableList<String>,
+                    neverAskList: MutableList<String>
+                ) {
+                    coroutine.resume(RequestResult.Denied(nextAskList, neverAskList))
+                }
+            })
+    }
+}
+
+suspend fun Fragment.requestPermissions(vararg permissions: String): RequestResult {
+    return suspendCancellableCoroutine { coroutine ->
+        PermissionManager.with(this)
+            ?.permissions(*permissions)
+            ?.request(object : RequestCallback() {
+                override fun onAllGranted() {
+                    coroutine.resume(RequestResult.Granted)
+                }
+
+                override fun onDenied(
+                    nextAskList: MutableList<String>,
+                    neverAskList: MutableList<String>
+                ) {
+                    coroutine.resume(RequestResult.Denied(nextAskList, neverAskList))
+                }
+            })
+    }
 }

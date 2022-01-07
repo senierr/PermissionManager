@@ -1,6 +1,6 @@
 # PermissionManager
 
-[![](https://img.shields.io/badge/release-v2.0.0-blue.svg)](https://github.com/senierr/PermissionManager)
+[![](https://img.shields.io/badge/release-v2.1.0-blue.svg)](https://github.com/senierr/PermissionManager)
 [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/senierr/PermissionManager)
 
 Android 6.0+ 动态权限申请
@@ -12,7 +12,7 @@ Android 6.0+ 动态权限申请
 ### 导入仓库
 
 ```
-implementation 'com.senierr.permission:library:最新版本'
+implementation 'io.github.senierr:permission:2.1.0'
 ```
 
 ### 检查权限
@@ -51,6 +51,15 @@ requestPermissions(permissions,
     onDeniedCallback = { nextAskList, neverAskList ->
         ...
     })
+    
+协程中使用
+lifecycleScope.launch {
+    val result = requestPermissions(permissions)
+    when (result) {
+        is RequestResult.Granted -> { }
+        is RequestResult.Denied -> { }
+    }
+}
 ```
 
 ## 申请回调

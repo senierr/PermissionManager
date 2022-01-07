@@ -32,5 +32,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation project(':library')
+//    implementation project(':library')
+    implementation 'io.github.senierr:permission:2.1.0'
 }
